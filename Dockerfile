@@ -1,26 +1,30 @@
 # Step 1: Use an official Maven image to build the project
-FROM maven:3.8-openjdk-17-slim as builder
+FROM eclipse-temurin:17 as builder
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Step 2: Clone the repository and copy it into the Docker image
-RUN git clone https://github.com/vm84039/Exoplanet.git .
+# Copy the Maven project file (pom.xml) to the container
+COPY pom.xml .
 
-# Step 3: Build the project with Maven
-RUN mvn clean install
+# Download the dependencies (without building the project yet)
+RUN apt-get update && apt-get install -y maven
+RUN mvn dependency:go-offline
 
-# Step 4: Set up the environment to run the application (Java 17 runtime)
-FROM openjdk:17-slim
+# Copy the rest of the application code
+COPY src /app/src
 
-# Set the working directory inside the container
-WORKDIR /app
+# Step 2: Build the project
+RUN mvn clean package
 
-# Copy the JAR file from the builder stage
-COPY --from=builder /app/target/*.jar /app/exoplanet.jar
+# Step 3: Use a smaller image to run the application
+FROM eclipse-temurin:17-slim
 
-# Expose any necessary ports (e.g., for a web service)
+# Copy the built JAR from the builder stage
+COPY --from=builder /app/target/exoplanet-app.jar /app/exoplanet-app.jar
+
+# Expose the port the application will run on
 EXPOSE 8080
 
 # Command to run the application
-CMD ["java", "-jar", "/app/exoplanet.jar"]
+ENTRYPOINT ["java", "-jar", "/app/exoplanet-app.jar"]
