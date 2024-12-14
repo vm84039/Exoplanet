@@ -1,29 +1,23 @@
-# Step 1: Use an official Maven image to build the project
-FROM maven:3.8.6-openjdk-17-slim as builder
+# Use Maven with OpenJDK 17 as the base image
+FROM maven:3.8.5-openjdk-17 AS build
 
-# Set the working directory inside the container
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the Maven project file (pom.xml) to the container
-COPY pom.xml .
+# Clone the repository
+RUN git clone https://github.com/vm84039/Exoplanet.git .
 
-# Download the dependencies (without building the project yet)
-RUN mvn dependency:go-offline
+# Build the app using Maven
+RUN mvn clean install
 
-# Copy the rest of the application code
-COPY src /app/src
-
-# Step 2: Build the project
-RUN mvn clean package
-
-# Step 3: Use a smaller image to run the application
+# Use a minimal OpenJDK 17 image for the runtime environment
 FROM openjdk:17-slim
 
-# Copy the built JAR from the builder stage
-COPY --from=builder /app/target/exoplanet-app.jar /app/exoplanet-app.jar
+# Set the working directory in the runtime container
+WORKDIR /app
 
-# Expose the port the application will run on
-EXPOSE 8080
+# Copy the built application from the build container
+COPY --from=build /app/target/exoplanet.jar /app/exoplanet.jar
 
-# Command to run the application
-ENTRYPOINT ["java", "-jar", "/app/exoplanet-app.jar"]
+# Set the default command to run the application
+CMD ["java", "-jar", "/app/exoplanet.jar"]
