@@ -1,5 +1,5 @@
 # Step 1: Use an official Maven image to build the project
-FROM eclipse-temurin:17 as builder
+FROM maven:3.8.6-openjdk-17-slim as builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -8,7 +8,6 @@ WORKDIR /app
 COPY pom.xml .
 
 # Download the dependencies (without building the project yet)
-RUN apt-get update && apt-get install -y maven
 RUN mvn dependency:go-offline
 
 # Copy the rest of the application code
@@ -18,7 +17,7 @@ COPY src /app/src
 RUN mvn clean package
 
 # Step 3: Use a smaller image to run the application
-FROM eclipse-temurin:17-slim
+FROM openjdk:17-slim
 
 # Copy the built JAR from the builder stage
 COPY --from=builder /app/target/exoplanet-app.jar /app/exoplanet-app.jar
