@@ -26,3 +26,5 @@ replay_pid*
 
 # Maven target directory
 /target/
+
+exoplanet-catalogue.json
