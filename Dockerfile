@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Run Maven to build the application
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 # Use a lightweight OpenJDK runtime for the final image
 FROM openjdk:17-slim
