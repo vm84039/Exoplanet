@@ -75,7 +75,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>App</mainClass>
+                        <mainClass>com.planetdata.App</mainClass>
                     </manifest>
                 </archive>
             </configuration>
