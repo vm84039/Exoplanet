@@ -17,7 +17,7 @@ FROM openjdk:17-slim
 WORKDIR /app
 
 # Copy the built application JAR file from the build stage
-COPY --from=build /app/target/*.jar /app/exoplanet.jar
+COPY --from=build /app/target/exoplanet-1.jar /app/exoplanet.jar
 
 # Specify the command to run the application
 CMD ["java", "-jar", "/app/exoplanet.jar"]
