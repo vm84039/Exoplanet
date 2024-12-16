@@ -28,3 +28,4 @@ replay_pid*
 /target/
 
 exoplanet-catalogue.json
+dependency-reduced-pom.xml

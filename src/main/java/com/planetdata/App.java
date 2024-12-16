@@ -1,8 +1,13 @@
 package com.planetdata;
 
+import static spark.Spark.*;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import spark.Spark;
 
 public class App {
     public static void main(String[] args) {
@@ -31,6 +36,15 @@ public class App {
              * large planets.
              */
             planetTimeline(planetList);
+            // Generate HTML using HtmlBuilder
+
+            // Start Spark Server
+            port(8080); // Runs the server on localhost:8080
+            get("/", (req, res) -> {
+                res.type("text/html");  // Set content type to HTML
+                return PlanetHtml.generatePage(noStar(planetList), hottestStar(planetList), planetTimeline(planetList) );  
+            });
+            System.out.println("Server running at http://localhost:8080");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,12 +75,14 @@ public class App {
         return tempPlanet;
     }
 
-    public static void planetTimeline(List<PlanetModel> planets) {
+    public static List<TimelineData> planetTimeline(List<PlanetModel> planets) {
         System.out.printf("A timeline of the number of planets discovered per year grouped by size\n");
+        List<TimelineData> timelineDataList = new ArrayList<>();
+
 
         if (planets == null || planets.isEmpty()) {
             System.out.println("No planet data available.");
-            return;
+            return timelineDataList;
         }
 
         // Sort the planets first by year (descending) and then by size (radius)
@@ -102,18 +118,21 @@ public class App {
 
             // Handle the output for the current year
             if (year == 0) {
-                System.out.println(small + " small " + singular(small) + ", " + medium + " medium " + singular(medium) + ", " +   large
-                        + " large " + singular(large) +"  were discovered in years that are not listed.");
+                System.out.println(small + " small " + singular(small) + ", " + medium + " medium " + singular(medium)
+                        + ", " + large
+                        + " large " + singular(large) + "  were discovered in years that are not listed.");
             } else {
-                System.out.printf("In " + year + ", we discovered " + small + " small " + singular(small) + ", " + medium + " medium " + singular(medium) + ", and " +   large
+                System.out.printf("In " + year + ", we discovered " + small + " small " + singular(small) + ", "
+                        + medium + " medium " + singular(medium) + ", and " + large
                         + " large " + singular(large) + ".\n");
             }
-
+            timelineDataList.add(new TimelineData(year, small, medium, large));
             // If there are more planets, update the year to the next group
             if (i <= last) {
                 year = planets.get(i).getDiscoveryYear();
             }
         }
+        return timelineDataList;
     }
 
     public static String singular(int num) {

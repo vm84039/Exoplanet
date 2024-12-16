@@ -6,7 +6,7 @@ cd Exoplanet
 mvn clean package
 java -jar target/exoplanet-1.jar
 ***Run Unit via terminal with Java installed**
-
+mvn test
 
 **Docker Instructions to run App**
 docker build -t exoplanet .
@@ -15,3 +15,4 @@ docker run -it --rm exoplanet
 **Docker Instructions for Unit Testing**
 docker run -it exoplanet /bin/bash
 mvn test
+exit
