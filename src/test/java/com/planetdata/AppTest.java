@@ -52,6 +52,18 @@ public class AppTest {
                                                 "", "", "", 0, 0,
                                                 0, 0, ""));
                 int orphanPlanets = App.noStar(mockPlanets);
+                    // Print both the expected and actual outcomes
+                int expectedOutcome = 4;
+
+                System.out.println("\t\t\t**Test 1**\n\t\t\tExpected Outcome: " + expectedOutcome);
+                System.out.println("\t\t\tActual Outcome: " + orphanPlanets);
+                if (expectedOutcome == orphanPlanets){
+                         System.out.println("\t\t\t**Test 1 passed**\n");
+                }
+                else {
+                        System.out.println("\t\t\t**Test 1 failed**\n");
+
+                }
                 assertEquals(4, orphanPlanets, "There should be 4 orphan planet.");
 
         }
@@ -71,6 +83,22 @@ public class AppTest {
                                                 ""));
 
                 PlanetModel hottestPlanet = App.hottestStar(mockPlanets);
+
+                String expectedPlanetIdentifier = "Hot";
+
+
+                    // Print both the expected and actual outcomes
+                System.out.println("\t\t\t**Test2**\n\t\t\tExpected Planet Identifier: " + expectedPlanetIdentifier);
+                System.out.println("\t\t\tActual Planet Identifier: " + hottestPlanet.getPlanetIdentifier());
+
+                if (expectedPlanetIdentifier.equals(hottestPlanet.getPlanetIdentifier())){
+                        System.out.println("\t\t\t**Test 2 passed**\n");
+               }
+               else {
+                       System.out.println("\t\t\t**Test 2 failed**\n");
+
+               }
+
                 assertNotNull(hottestPlanet, "The hottest planet should not be null.");
                 assertEquals("Hot", hottestPlanet.getPlanetIdentifier(), "The hottest planet should be Hot.");
         }
@@ -114,7 +142,24 @@ public class AppTest {
                                         "In 2022, we discovered 2 small planets, 0 medium planets, and 0 large planets.\n");
 
                         assertEquals(expectedOutput.toString(), outputStream.toString());
-                } finally {
+                        System.setOut(originalOut);
+
+                                // Print expected and actual results after assertion
+                        System.out.println("\t\t\t**Test 3**\nExpected Output: ");
+                        System.out.println(expectedOutput.toString());
+                        
+                        System.out.print("Actual Output: ");
+                        System.out.print(outputStream.toString());
+
+                        if (expectedOutput.toString().equals(outputStream.toString())){
+                                System.out.println("\t\t\t**Test 3 passed**\n");
+                       }
+                       else {
+                               System.out.println("\t\t\t**Test 3 failed**\n");
+        
+                       }
+        
+                                } finally {
                         System.setOut(originalOut); // Always restore the original System.out
                 }
         }
