@@ -87,9 +87,9 @@ public class PlanetHtml {
 
                 // Section 3: Timeline Text
                 .append("            <div id=\"q3\" class=\"section\">\n")
-                .append("                <div class=\"card\">\n")
-                .append("                    <div class=\"card-body\">\n")
-                .append("                        <h5 class=\"card-title\">Question 3: Discovery Timeline</h5>\n");
+                .append("                        <h5>Question 3: Discovery Timeline</h5>\n")
+                .append("                                <p><strong> A timeline of the number of planets discovered per year grouped by size. Use the following groups:</strong>\n</p>")
+                .append("                                <p style=\\\"font-size: 9px;\\>   “Small” is less than 1 Jupiter radii, “medium” is less than 2 Jupiter radii, and anything bigger is considered “large”.\n</p>");
         for (TimelineData data : dataList) {
             html.append("                        <p>In <strong>")
                 .append(data.getYear() == 0 ? "Unknown" : data.getYear())
