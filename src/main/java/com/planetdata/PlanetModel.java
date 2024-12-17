@@ -268,6 +268,7 @@ public class PlanetModel {
     public void setHostStarAgeGyr(String hostStarAgeGyr) {
         this.hostStarAgeGyr = hostStarAgeGyr;
     }
+    
 
     @Override
     public String toString() {

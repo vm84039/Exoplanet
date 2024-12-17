@@ -31,6 +31,14 @@ public class TimelineData {
         return large;
     }
 
+    public static String singular(int num) {
+        if (num == 1) {
+            return "planet";
+        } else {
+            return "planets";
+        }
+    }
+
     @Override
     public String toString() {
         return "Year: " + year + ", Small: " + small + ", Medium: " + medium + ", Large: " + large;
